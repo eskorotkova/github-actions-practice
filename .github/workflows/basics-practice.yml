@@ -55,5 +55,5 @@ jobs: # it's possible to have many different jobs in 1 file
 
     - name: Lets test some packages if existed ver-2
       run : |
-        zip -v
+        zip;
         docker -v

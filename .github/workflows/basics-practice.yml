@@ -1,0 +1,34 @@
+#-----------------------------------------
+# GitHub Actions Basics
+#
+# Tutorial by Denis Astahov
+#-----------------------------------------
+name: githubActions-practice-basics # Visible name of a file which will be used in configurations. 
+
+on: #[push] # when to trigger this automatization ex: [push,pull_request]
+  push:
+    branches:
+      - master # trigger this automatization file only after PUSH action and only into BRANCH "master"
+  
+
+jobs: # it's possible to have many different jobs in 1 file
+  my_testing: # job-name
+
+    runs-on: ubuntu-latest # which server to use (using dockerfile with latest ubuntu server) also called "runners"
+
+    steps: # which steps to do (which commands to run) aka Tasks in Ansible
+    - name: print Hello message
+      run: echo "Hello, World from Test job!" # the same as SHELL in Ansible
+    - name: Run a multi-line sript
+      run: |
+        echo Add other actions to build,
+        echo test, and deploy your project.
+
+
+  my_deploy: # job-name
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: print Hello message
+      run: echo "Hello, World from Deploy job!"
+    

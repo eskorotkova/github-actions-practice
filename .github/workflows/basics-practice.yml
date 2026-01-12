@@ -72,5 +72,4 @@ jobs: # it's possible to have many different jobs in 1 file
     # using echo "\n" to print results on their own lines
       run : |
         zip --version
-        echo "\n" 
         docker --version

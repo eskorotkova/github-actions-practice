@@ -5,6 +5,11 @@
 #-----------------------------------------
 name: githubActions-practice-basics # Visible name of a file which will be used in configurations. 
 
+# зададим глобальные переменные для данного файла
+env:
+  APPLICATION_NAME   : "MyFlask"
+  DEPLOY_PACKAGE_NAME: "flask-deploy-ver-${{ github.sha }}" # github.sha == SHA-код коммита
+
 on: #[push] # when to trigger this automatization ex: [push,pull_request]
   push:
     branches:
@@ -18,17 +23,22 @@ jobs: # it's possible to have many different jobs in 1 file
 
     steps: # which steps to do (which commands to run) aka Tasks in Ansible
     - name: print Hello message
-      run: echo "Hello, World from Test job!" # the same as SHELL in Ansible
+      run: echo "Hello, World from Testing job!" # the same as SHELL in Ansible
+    
     - name: Run a multi-line sript
       run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+        echo "Add other actions to build,"
+        echo "test, and deploy your project."
+        echo "Application name: ${{ env.APPLICATION_NAME }}"
 
 
   my_deploy: # job-name
     runs-on: ubuntu-latest
-    needs: [my_testing]
+    needs: [my_testing] # джоба my_deploy запуститтся ТОЛЬКО ПОСЛЕ успешного выполнения джобы my_testing. без этого параметра джобы запускаются одновременно. 
     steps:
     - name: print Hello message
       run: echo "Hello, World from Deploy job!"
     
+    - name: Printing Deployment package
+      run: echo "Package name is ${{ env.DEPLOY_PACKAGE_NAME }}"
+      

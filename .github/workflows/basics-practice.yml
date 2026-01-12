@@ -54,7 +54,8 @@ jobs: # it's possible to have many different jobs in 1 file
       run : aws --version
 
     - name: Lets test some packages if existed ver-2
+    # using echo "\n" to print results on their own lines
       run : |
         zip
-        echo "\n"
+        echo "\n" 
         docker -v

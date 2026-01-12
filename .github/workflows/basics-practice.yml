@@ -34,6 +34,11 @@ jobs: # it's possible to have many different jobs in 1 file
     - name: List current folder
       run : ls -la 
 
+    - name: Git clone my repo # копирует файлы из нашего гит репозитория
+      uses: actions/checkout@v1 # uses - используется для запуска скриптов. обычно используется вначале файла. 
+
+    - name: List current folder # запускаем второй раз и проверяем результат клонирования репозитория
+      run : ls -la 
 
   my_deploy: # job-name
     runs-on: ubuntu-latest

@@ -49,4 +49,11 @@ jobs: # it's possible to have many different jobs in 1 file
     
     - name: Printing Deployment package
       run: echo "Package name is ${{ env.DEPLOY_PACKAGE_NAME }}"
-      
+
+    - name: Lets test some packages if existed ver-1
+      run : aws --version
+
+    - name: Lets test some packages if existed ver-2
+      run : |
+        zip
+        docker -v

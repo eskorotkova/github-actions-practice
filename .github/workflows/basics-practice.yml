@@ -31,6 +31,9 @@ jobs: # it's possible to have many different jobs in 1 file
         echo "test, and deploy your project."
         echo "Application name: ${{ env.APPLICATION_NAME }}"
 
+    - name: List current folder
+      run : ls -la 
+
 
   my_deploy: # job-name
     runs-on: ubuntu-latest

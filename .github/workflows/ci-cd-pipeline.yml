@@ -1,17 +1,11 @@
 name: CI-CD-Pipeline-to-AWS-ElasticBeanstalk
 # глобальные переменные окружения
 env:
-  ACCESS_KEY:
-  ACCESS_SECRET_KEY:
-  AWS_ELASTIC_BEANSTOCK_ID:
-  AWS_S3_SECRET:
   EB_PACKAGE_S3_BUCKET_NAME: "github-flask-app-test" #наименование s3 bucket
   EB_APPLICATION_NAME: "MyFlask" #наименование elastic beanstock приложения
   EB_ENVIRONMENT_NAME: "MyFlask-env" #наименование elastic beanstock окружения
   DEPLOY_PACKAGE_NAME: "flask_app_${{ github.sha }}.zip" #наименование самого приложения
   AWS_REGION_NAME: "ue-west-2" #регион AWS, где все расположено
-
-
   
 on: 
   push:
@@ -29,5 +23,20 @@ jobs:
     - name: Create ZIP deployment package
       run: zip -r ${{ env.DEPLOY_PACKAGE_NAME }} ./ -x *.git* # запаковать приложение в текущей директории 
       # наименованием приложения берется из env. Но удаляем из наиенования содержимое *.git* (.git, .github, и т.д)
-      
-    
+       
+#сикреты задаем через Security - Secrets and Variables
+    - name: Configure my AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1 # скрипт для авторизации в AWS
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+        aws-secret-access-key-id: ${{ secrets.AWS_ACCESS_SECRET_KEY }}
+        aws-region: ${{ env.AWS_REGION_NAME }}
+
+#закинуть файлы в s3 bucket        
+    - name: Copy deployment package to S3 Bucket
+    #команда CLI от AWS для копирования <file-name> <path_to_copy>
+      run: aws s3 cp ${{ env.DEPLOY_PACKAGE_NAME }} s3://${{ env.EB_PACKAGE_S3_BUCKET_NAME }}/ 
+
+# Print message
+    - name: Print message for CI finish
+      run: echo "CI Pipeline part successfully finished"

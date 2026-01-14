@@ -1,0 +1,33 @@
+name: CI-CD-Pipeline-to-AWS-ElasticBeanstalk
+# глобальные переменные окружения
+env:
+  ACCESS_KEY:
+  ACCESS_SECRET_KEY:
+  AWS_ELASTIC_BEANSTOCK_ID:
+  AWS_S3_SECRET:
+  EB_PACKAGE_S3_BUCKET_NAME: "github-flask-app-test" #наименование s3 bucket
+  EB_APPLICATION_NAME: "MyFlask" #наименование elastic beanstock приложения
+  EB_ENVIRONMENT_NAME: "MyFlask-env" #наименование elastic beanstock окружения
+  DEPLOY_PACKAGE_NAME: "flask_app_${{ github.sha }}.zip" #наименование самого приложения
+  AWS_REGION_NAME: "ue-west-2" #регион AWS, где все расположено
+
+
+  
+on: 
+  push:
+    branches:
+      - master
+
+jobs:
+  my-ci-part:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Git clone our repo
+      uses: actions/checkout@v1
+
+    - name: Create ZIP deployment package
+      run: zip -r ${{ env.DEPLOY_PACKAGE_NAME }} ./ -x *.git* # запаковать приложение в текущей директории 
+      # наименованием приложения берется из env. Но удаляем из наиенования содержимое *.git* (.git, .github, и т.д)
+      
+    
